@@ -1,20 +1,15 @@
 import * as React from "react";
-import { Table, Cell, Column } from "@blueprintjs/table";
 
 export const Home = () => {
     return (
         <div>
-            Homey home!! <span className="pt-icon-standard pt-icon-more" />
-            <Table numRows={10}>
-                <Column
-                    name="Dollars"
-                    cellRenderer={(i: number) => (
-                        <Cell>{`$${(i * 10).toFixed(2)}`}</Cell>
-                    )}
-                />
-            </Table>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis
+            tincidunt erat in purus ullamcorper ultricies. Duis lacinia aliquet
+            dolor. Maecenas velit enim, eleifend a, tempor eu, mattis in, nisl.
+            Maecenas ut orci. Sed egestas auctor sem. Curabitur vitae pede vel
+            nisl tristique commodo. Phasellus ut nisl. Cras massa. Suspendisse
+            potenti. Vestibulum vitae augue. Mauris mauris sapien, aliquet
+            vitae, tincidunt ac, volutpat eu, ante. Nunc sed quam.
         </div>
     );
 };
-
-export const thing = "test";

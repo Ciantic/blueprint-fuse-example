@@ -1,6 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router, Link } from "react-router-dom";
+import { Route, BrowserRouter as Router, Link, Switch } from "react-router-dom";
+import {
+    Navbar,
+    NavbarGroup,
+    NavbarHeading,
+    Alignment,
+    NavbarDivider,
+    Button
+} from "@blueprintjs/core";
 
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -10,27 +18,62 @@ import "./index.css";
 export const App = () => {
     return (
         <div>
-            <Link to="/">Roog</Link>
-            <br />
-            <Link to="/home">Home</Link>
-            <br />
-            <Link to="/other">Other</Link>
-            <br />
-
-            <AsyncRoute
-                path="/home"
-                importer={() => import("./Home")}
-                render={({ Home }) => {
-                    return <Home />;
-                }}
+            <Navbar>
+                <NavbarGroup align={Alignment.LEFT}>
+                    <NavbarHeading>Testing</NavbarHeading>
+                    <NavbarDivider />
+                    <Link to="/">
+                        <Button
+                            className="pt-minimal"
+                            icon="home"
+                            text="Home"
+                        />
+                    </Link>
+                    <Link to="/somepage">
+                        <Button className="pt-minimal" text="Somepage" />
+                    </Link>
+                    <Link to="/other">
+                        <Button className="pt-minimal" text="Other" />
+                    </Link>
+                </NavbarGroup>
+            </Navbar>
+            {/* <Switch> */}
+            {/* TODO: Switch breaks things :( */}
+            <Route
+                exact
+                path="/"
+                render={() => (
+                    <LoaderWrapper
+                        importer={() => import("./Home")}
+                        render={({ Home }) => {
+                            return <Home />;
+                        }}
+                    />
+                )}
             />
-            <AsyncRoute
+            <Route
+                path="/somepage"
+                render={() => (
+                    <LoaderWrapper
+                        importer={() => import("./Somepage")}
+                        render={({ Somepage }) => {
+                            return <Somepage />;
+                        }}
+                    />
+                )}
+            />
+            <Route
                 path="/other"
-                importer={() => import("./Other")}
-                render={({ Other }) => {
-                    return <Other />;
-                }}
+                render={() => (
+                    <LoaderWrapper
+                        importer={() => import("./Other")}
+                        render={({ Other }) => {
+                            return <Other />;
+                        }}
+                    />
+                )}
             />
+            {/* </Switch> */}
         </div>
     );
 };
