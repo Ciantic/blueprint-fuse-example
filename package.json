@@ -1,0 +1,27 @@
+{
+    "name": "blueprint-fuse-example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/react": "^16.3.8",
+        "@types/react-dom": "^16.0.5",
+        "@types/react-router-dom": "^4.2.6",
+        "fuse-box": "^3.2.2-next.1",
+        "uglify-es": "^3.3.9"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^2.1.1",
+        "@blueprintjs/table": "^2.0.0",
+        "react": "^16.3.1",
+        "react-dom": "^16.3.1",
+        "react-router-dom": "^4.2.2",
+        "react-transition-group": "^2.3.0",
+        "reflect-metadata": "^0.1.12"
+    }
+}

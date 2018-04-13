@@ -1,0 +1,11 @@
+build
+node_modules
+typings
+test/*.d.ts
+examples
+*.map
+.project
+.tags
+.settings
+.fusebox
+dist/
