@@ -79,7 +79,12 @@ export const App = () => {
     );
 };
 
-export class LoaderWrapper<T> extends React.Component<
+/**
+ * ImportWrapper
+ *
+ * Wraps the asynchronous import
+ */
+export class ImportWrapper<T> extends React.Component<
     {
         importer: () => Promise<T>;
         render: (v: T) => React.ReactNode;
@@ -88,7 +93,6 @@ export class LoaderWrapper<T> extends React.Component<
         content?: React.ReactNode;
     }
 > {
-    // Do asynchronous action here
     async componentDidMount() {
         this.setState({
             content: this.props.render(await this.props.importer())
@@ -105,6 +109,8 @@ export class LoaderWrapper<T> extends React.Component<
 
 /**
  * Asynchronous route, loaded on demand
+ *
+ * @see {ImportWrapper}
  */
 export class AsyncRoute<T> extends React.Component<{
     path: string;
@@ -127,7 +133,7 @@ export class AsyncRoute<T> extends React.Component<{
                 strict={this.props.strict}
                 sensitive={this.props.sensitive}
                 render={() => (
-                    <LoaderWrapper
+                    <ImportWrapper
                         key={this.props.path}
                         importer={this.props.importer}
                         render={this.props.render}
