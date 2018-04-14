@@ -1,6 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router, Link, Switch } from "react-router-dom";
+import {
+    Route,
+    BrowserRouter as Router,
+    NavLink,
+    Switch
+} from "react-router-dom";
 import {
     Navbar,
     NavbarGroup,
@@ -22,58 +27,54 @@ export const App = () => {
                 <NavbarGroup align={Alignment.LEFT}>
                     <NavbarHeading>Testing</NavbarHeading>
                     <NavbarDivider />
-                    <Link to="/">
-                        <Button
-                            className="pt-minimal"
-                            icon="home"
-                            text="Home"
-                        />
-                    </Link>
-                    <Link to="/somepage">
-                        <Button className="pt-minimal" text="Somepage" />
-                    </Link>
-                    <Link to="/other">
-                        <Button className="pt-minimal" text="Other" />
-                    </Link>
+                    <NavLink
+                        exact
+                        to="/"
+                        className="pt-button pt-minimal pt-icon-home"
+                        activeClassName="pt-active"
+                    >
+                        Home
+                    </NavLink>
+                    <NavLink
+                        to="/somepage"
+                        className="pt-button pt-minimal"
+                        activeClassName="pt-active"
+                    >
+                        Somepage
+                    </NavLink>
+                    <NavLink
+                        to="/other"
+                        className="pt-button pt-minimal"
+                        activeClassName="pt-active"
+                    >
+                        Other
+                    </NavLink>
                 </NavbarGroup>
             </Navbar>
-            {/* <Switch> */}
-            {/* TODO: Switch breaks things :( */}
-            <Route
-                exact
-                path="/"
-                render={() => (
-                    <LoaderWrapper
-                        importer={() => import("./Home")}
-                        render={({ Home }) => {
-                            return <Home />;
-                        }}
-                    />
-                )}
-            />
-            <Route
-                path="/somepage"
-                render={() => (
-                    <LoaderWrapper
-                        importer={() => import("./Somepage")}
-                        render={({ Somepage }) => {
-                            return <Somepage />;
-                        }}
-                    />
-                )}
-            />
-            <Route
-                path="/other"
-                render={() => (
-                    <LoaderWrapper
-                        importer={() => import("./Other")}
-                        render={({ Other }) => {
-                            return <Other />;
-                        }}
-                    />
-                )}
-            />
-            {/* </Switch> */}
+            <Switch>
+                <AsyncRoute
+                    exact
+                    path="/"
+                    importer={() => import("./Home")}
+                    render={({ Home }) => {
+                        return <Home />;
+                    }}
+                />
+                <AsyncRoute
+                    path="/somepage"
+                    importer={() => import("./Somepage")}
+                    render={({ Somepage }) => {
+                        return <Somepage />;
+                    }}
+                />
+                <AsyncRoute
+                    path="/other"
+                    importer={() => import("./Other")}
+                    render={({ Other }) => {
+                        return <Other />;
+                    }}
+                />
+            </Switch>
         </div>
     );
 };
@@ -84,40 +85,50 @@ export class LoaderWrapper<T> extends React.Component<
         render: (v: T) => React.ReactNode;
     },
     {
-        node?: T;
+        content?: React.ReactNode;
     }
 > {
     // Do asynchronous action here
     async componentDidMount() {
         this.setState({
-            node: await this.props.importer()
+            content: this.props.render(await this.props.importer())
         });
     }
 
     render() {
-        if (this.state && this.state.node) {
-            return this.props.render(this.state.node);
+        if (this.state && this.state.content) {
+            return this.state.content;
         }
         return <div>Loading still...</div>;
     }
 }
 
-export class AsyncRoute<T> extends React.Component<
-    {
-        path: string;
-        importer: () => Promise<T>;
-        render: (v: T) => React.ReactNode;
-    },
-    {
-        node: T;
-    }
-> {
+/**
+ * Asynchronous route, loaded on demand
+ */
+export class AsyncRoute<T> extends React.Component<{
+    path: string;
+    importer: () => Promise<T>;
+    render: (v: T) => React.ReactNode;
+    exact?: boolean;
+    strict?: boolean;
+    sensitive?: boolean;
+
+    // Required for <Switch /> support, see
+    // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/modules/Switch.js
+    computedMatch?: any;
+}> {
     render() {
         return (
             <Route
+                computedMatch={this.props.computedMatch}
                 path={this.props.path}
+                exact={this.props.exact}
+                strict={this.props.strict}
+                sensitive={this.props.sensitive}
                 render={() => (
                     <LoaderWrapper
+                        key={this.props.path}
                         importer={this.props.importer}
                         render={this.props.render}
                     />
