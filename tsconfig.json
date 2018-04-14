@@ -3,21 +3,12 @@
         "target": "es6",
         "module": "commonjs",
         "moduleResolution": "node",
-        "isolatedModules": false,
         "jsx": "react",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declaration": true,
         "strict": true,
-        "noImplicitAny": true,
-        // "noImplicitUseStrict": true,
-        "removeComments": true,
         "noLib": false,
         "outDir": "build/",
-        // "noEmitHelpers": true,
-        "importHelpers": true,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true,
         "lib": [
             "es5",
             "es2017",
@@ -25,11 +16,5 @@
             "es2015.promise",
             "es2016.array.include"
         ]
-    },
-    // "exclude": [],
-    "compileOnSave": false,
-    "buildOnSave": false,
-    "atom": {
-        "rewriteTsconfig": false
     }
 }
