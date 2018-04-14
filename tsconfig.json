@@ -10,7 +10,7 @@
         "declaration": true,
         "strict": true,
         "noImplicitAny": true,
-        "noImplicitUseStrict": true,
+        // "noImplicitUseStrict": true,
         "removeComments": true,
         "noLib": false,
         "outDir": "build/",
